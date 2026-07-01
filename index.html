@@ -1,47 +1,21 @@
 <!DOCTYPE html>
-<html dir="rtl" lang="ckb">
-<head>
-    <meta charset="UTF-8">
-    <title>بانگکردن</title>
-    <style>
-        body { display: flex; justify-content: center; align-items: center; height: 100vh; background-color: #f0f0f0; font-family: tahoma; }
-        button { padding: 20px 40px; font-size: 20px; cursor: pointer; background-color: #007bff; color: white; border: none; border-radius: 10px; }
-        button:hover { background-color: #0056b3; }
-    </style>
-</head>
+<html>
 <body>
-
-    <button id="callBtn">بانگکردن</button>
-
+    <button onclick="notifyMe()" style="padding:50px; font-size:40px;">نان حازرە!</button>
     <script>
-        const btn = document.getElementById('callBtn');
-
-        btn.addEventListener('click', async () => {
-            // داوای ڕێگەپێدان بۆ نۆتیفیکەیشن
-            const permission = await Notification.requestPermission();
-            
-            if (permission === 'granted') {
-                let count = 0;
-                const interval = setInterval(() => {
-                    if (count < 5) {
-                        new Notification("بانگکردن!", {
-                            body: "کەسێک بانگت دەکات!",
-                            icon: 'https://cdn-icons-png.flaticon.com/512/6195/6195699.png'
-                        });
-                        
-                        // لێدانی دەنگ (سەرکەوتوو نابێت ئەگەر پەڕەکە چالاک نەبێت)
-                        const audio = new Audio('https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3');
-                        audio.play();
-                        
-                        count++;
-                    } else {
-                        clearInterval(interval);
-                    }
-                }, 1000); // هەر یەک چرکە جارێک
-            } else {
-                alert("تکایە ڕێگە بە نۆتیفیکەیشن بدە");
+        function notifyMe() {
+            if (!("Notification" in window)) {
+                alert("ببورە، وێبگەڕەکەت ڕێگەی نادات!");
+            } else if (Notification.permission === "granted") {
+                for(let i=0; i<5; i++) {
+                    new Notification("بانگکردن!", {body: "دایکم دەڵێت نان حازرە!", icon: 'icon.png'});
+                }
+            } else if (Notification.permission !== "denied") {
+                Notification.requestPermission().then(permission => {
+                    if (permission === "granted") notifyMe();
+                });
             }
-        });
+        }
     </script>
 </body>
 </html>
