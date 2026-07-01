@@ -6,29 +6,27 @@
 </head>
 <body style="display:flex; justify-content:center; align-items:center; height:100vh;">
 
-    <button id="btn" style="padding:40px; font-size:30px; cursor:pointer;">بانگکردن</button>
+    <button id="btn" style="padding:40px; font-size:30px; cursor:pointer; background:red; color:white; border-radius:10px;">بانگکردن!</button>
 
     <script>
         const btn = document.getElementById('btn');
+        const audio = new Audio('https://actions.google.com/sounds/v1/alarms/beep_short.ogg');
 
         btn.addEventListener('click', async () => {
-            // هەنگاوی یەکەم: داوای رێگەپێدان بکە
-            const permission = await Notification.requestPermission();
+            // هەوڵدان بۆ لێدانی دەنگ
+            audio.play();
             
-            if (permission === 'granted') {
-                // ئەگەر رێگەی پێدرا، ٥ جار نۆتیفیکەیشن بنێرە
-                for(let i = 0; i < 5; i++) {
-                    setTimeout(() => {
-                        new Notification("نان حازرە!", {
-                            body: "هەستە وەرە خوارەوە!",
-                            icon: 'https://cdn-icons-png.flaticon.com/512/6195/6195699.png'
-                        });
-                    }, i * 1000); // هەر چرکەیەک جارێک
+            // داوای ڕێگەپێدان بۆ نۆتیفیکەیشن
+            try {
+                const permission = await Notification.requestPermission();
+                if (permission === 'granted') {
+                    new Notification("نان حازرە!", { body: "هەستە وەرە خوارەوە!" });
                 }
-            } else {
-                alert("تکایە لە سێتینگ رێگەی نۆتیفیکەیشن بدە");
+            } catch (e) {
+                console.log("نەتوانرا نۆتیفیکەیشن بنێردرێت");
             }
         });
     </script>
 </body>
 </html>
+
